@@ -1,0 +1,53 @@
+START
+
+   VAR DALIA = 59
+
+   VAR KYLE = 33
+
+   PRINT DALIA
+
+   DALIA ++
+
+   PRINT DALIA
+
+   PRINT KYLE
+
+   PRINT AARON
+
+   PRINT DALIA % 2
+
+   PRINT DALIA ^ 2
+
+   PRINT DALIA - 2
+   
+   PRINT DALIA / 2
+
+   PRINT DALIA * 2
+
+   START
+
+      VAR AARON = 49
+
+      PRINT AARON
+
+      PRINT DALIA
+
+   FINISH
+
+   PRINT AARON
+
+   START
+
+      KYLE = 1000
+
+      PRINT KYLE
+
+   FINISH
+
+   PRINT KYLE
+
+   KYLE --
+
+   PRINT KYLE
+
+FINISH
