@@ -1,0 +1,65 @@
+# File: Ch5Q1.txt
+# Author: Kyle Wood #1272942
+# Purpose: a) Explain what is happening in the program, b) create a mechanism that shows an infinite loop, c) present a solution that fixes the problem
+
+# Subprogram: 	PrintInt
+# Author: 	Kyle Wood
+# Purpose: 	To print a string to the console
+# Input: 	$a0 - The address of the string to print.
+# 		$a1 - The value of the int to print
+# Output: 	None
+# Side effects: The string is printed followed by the integer
+.text
+PrintInt:
+ 	# Print string. The string address is already in $a0
+ 	li $v0, 4
+ 	syscall
+
+ 	# Print integer. The integer value is in $a1, and must
+ 	# be first moved to $a0.
+ 	move $a0, $a1
+ 	li $v0, 1
+ 	syscall
+ 	
+ 	# Print a new line character
+ 	jal PrintNewLine
+ 	
+ 	#Return
+ 	jr $ra
+	
+a) This subprogram is calling a new subprogram, however the jal operator for the second subprogram call (PrintNewLine) is overriding the address value previously stored in $ra which then does not allow the program to return control to the main function that called the first program, it instead just keeps referring back to the same subprogram.
+b) To confirm that the subprogram is stuck in an infinite loop, we can either insert a print function after the subprogram call to show when a certain point in the code is (or is not) being reached, or a breakpoint can be set at the PrintInt beginning to step through and debug to follow through what is happening at each step in the code
+c) A solution we could use if we want to maintain the subprogram calling another subprogram is to move the address value stored in $ra to another unused register before calling the second subprogram to preserve that value, then after the second subprogram have the return statement pull the value of that preserved address instead of what was overwritten in $ra when the second subprogram was called.
+
+
+
+
+# File: Ch5Q2.txt
+# Author: Kyle Wood #1272942
+# Purpose: Discuss the problems in the code below and discuss possible solutions
+
+# Subprogram: 	PrintNewLine
+# Author: 		Kyle Wood
+# Purpose: 		to output a new line to the user console
+# Input/Output: None
+# Side effects: A new line char is printed to the console
+.text
+PrintNewLine:
+	li $v0, 4
+	la $a0, __PNL_newline
+	syscall
+	jr $ra
+.data
+ __PNL_newline: .asciiz "\n"
+ 
+PrintTab:
+	li $v0, 4
+	la $a0, tab
+	syscall
+	jr $ra
+.data
+ tab: .asciiz "\t"
+ 
+ Firstly, for proper conventions the programmer should have properly commented the beginning of the second subprogram (PrintTab) to indicate the name, purpose, input/output, side effects, etc.
+ The PrintTab subprogram also is missing a .text statement preceding its code, which in this case the assembler is likely thinking that the PrintTab text is still a part of the .data segment from the preceding PrintNewLine subprogram.
+ Additionally, the naming of the tab label does not follow suggested naming conventions for subprogram labels is at risk of conflicting with other labels for being such a common/generic name. The programmer should have preceded with two underscores, an acronym of the subprogram name, and another underscore before the variable name - something along the lines of __PT_tab
